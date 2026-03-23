@@ -1,23 +1,23 @@
-# 🛒 E-commerce Live Store (Livestore)
+﻿# ðŸ›’ E-commerce Live Store (Livestore)
 
-> A full-featured e-commerce store with live inventory, real-time stock counters, and QR order receipts — built on the [DevCore Shared Library](https://github.com/devcore/shared-library).
-
----
-
-## ✨ Features
-
-- 🔴 **Live Stock Counters** — Product cards show real-time stock levels, updating every 4 seconds via polling. Stock badges pulse yellow when running low and turn red when sold out. Add-to-cart buttons disable live when stock hits zero.
-- 📦 **Full Product Catalog** — Category browsing, search, sort, pagination. Hero images with gallery thumbnails on product pages.
-- 🛒 **Session Cart** — Add, update, remove items. Quantity validation against live stock. Persistent across page navigations.
-- 🏷️ **Coupon System** — Apply discount codes at cart or checkout. Supports percent (`SAVE10`) and fixed-amount (`FLAT20`) coupons with expiry dates, usage limits, and minimum order requirements.
-- 📱 **QR Order Receipts** — Every order gets a unique token and a QR code that permanently links back to the order summary. Screenshot it, print it, scan it forever.
-- 📊 **Analytics Dashboard** — Revenue today, order counts, avg order value, 30-day revenue line chart, top products bar chart, orders-by-status doughnut, and a live order feed.
-- 🖼️ **Pluggable Image Storage** — Upload product images to local filesystem, AWS S3, or Cloudflare R2 — change one line in `config.php`.
-- 🔐 **Admin Panel** — Manage products, orders, inventory, and coupons behind session-based auth.
+> A full-featured e-commerce store with live inventory, real-time stock counters, and QR order receipts â€” built on the [DevCore Shared Library](https://github.com/anshuman-dwibedi/devcore-shared).
 
 ---
 
-## 🧰 Tech Stack
+## âœ¨ Features
+
+- ðŸ”´ **Live Stock Counters** â€” Product cards show real-time stock levels, updating every 4 seconds via polling. Stock badges pulse yellow when running low and turn red when sold out. Add-to-cart buttons disable live when stock hits zero.
+- ðŸ“¦ **Full Product Catalog** â€” Category browsing, search, sort, pagination. Hero images with gallery thumbnails on product pages.
+- ðŸ›’ **Session Cart** â€” Add, update, remove items. Quantity validation against live stock. Persistent across page navigations.
+- ðŸ·ï¸ **Coupon System** â€” Apply discount codes at cart or checkout. Supports percent (`SAVE10`) and fixed-amount (`FLAT20`) coupons with expiry dates, usage limits, and minimum order requirements.
+- ðŸ“± **QR Order Receipts** â€” Every order gets a unique token and a QR code that permanently links back to the order summary. Screenshot it, print it, scan it forever.
+- ðŸ“Š **Analytics Dashboard** â€” Revenue today, order counts, avg order value, 30-day revenue line chart, top products bar chart, orders-by-status doughnut, and a live order feed.
+- ðŸ–¼ï¸ **Pluggable Image Storage** â€” Upload product images to local filesystem, AWS S3, or Cloudflare R2 â€” change one line in `config.php`.
+- ðŸ” **Admin Panel** â€” Manage products, orders, inventory, and coupons behind session-based auth.
+
+---
+
+## ðŸ§° Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -28,57 +28,57 @@
 | QR Codes | QrCode::url() via qrserver.com API (no library needed) |
 | Storage | Local filesystem (swap to S3 or R2 in config) |
 | Session | PHP native sessions (cart + auth) |
-| Shared Core | [DevCore Shared Library](../../core/) |
+| Shared Core | [DevCore Shared Library](https://github.com/anshuman-dwibedi/devcore-shared) |
 
 ---
 
-## 📁 Folder Structure
+## ðŸ“ Folder Structure
 
 ```
 livestore/
-├── index.php                   Storefront — product grid with live stock
-├── product.php                 Single product — gallery, details, live stock, add to cart
-├── cart.php                    Cart — items, quantities, coupon, totals
-├── checkout.php                Checkout form — name, email, address, place order
-├── order-confirmation.php      Post-order — summary + QR code receipt
-├── config.php                  Local config (DB, storage, app URL)
-├── database.sql                Full schema + sample data
-│
-├── api/
-│   ├── products.php            GET list/single, POST create, PUT update, DELETE
-│   ├── cart.php                GET cart, POST add, PUT qty, DELETE remove
-│   ├── orders.php              POST place, GET list/single, PUT update status
-│   ├── coupons.php             POST validate/create, GET list, PUT toggle, DELETE
-│   ├── analytics.php           GET dashboard stats (admin only)
-│   ├── live.php                GET live stock + recent orders (polling endpoint)
-│   └── logout.php              Session logout redirect
-│
-└── admin/
-    ├── login.php               Admin login form
-    ├── dashboard.php           Analytics dashboard + live order feed
-    ├── products.php            Manage products (add/edit/delete + image upload)
-    ├── orders.php              View/manage all orders, update status, QR per order
-    ├── inventory.php           Live inventory manager — inline stock editing
-    └── coupons.php             Create/manage coupons with usage progress bar
+â”œâ”€â”€ index.php                   Storefront â€” product grid with live stock
+â”œâ”€â”€ product.php                 Single product â€” gallery, details, live stock, add to cart
+â”œâ”€â”€ cart.php                    Cart â€” items, quantities, coupon, totals
+â”œâ”€â”€ checkout.php                Checkout form â€” name, email, address, place order
+â”œâ”€â”€ order-confirmation.php      Post-order â€” summary + QR code receipt
+â”œâ”€â”€ config.php                  Local config (DB, storage, app URL)
+â”œâ”€â”€ database.sql                Full schema + sample data
+â”‚
+â”œâ”€â”€ api/
+â”‚   â”œâ”€â”€ products.php            GET list/single, POST create, PUT update, DELETE
+â”‚   â”œâ”€â”€ cart.php                GET cart, POST add, PUT qty, DELETE remove
+â”‚   â”œâ”€â”€ orders.php              POST place, GET list/single, PUT update status
+â”‚   â”œâ”€â”€ coupons.php             POST validate/create, GET list, PUT toggle, DELETE
+â”‚   â”œâ”€â”€ analytics.php           GET dashboard stats (admin only)
+â”‚   â”œâ”€â”€ live.php                GET live stock + recent orders (polling endpoint)
+â”‚   â””â”€â”€ logout.php              Session logout redirect
+â”‚
+â””â”€â”€ admin/
+    â”œâ”€â”€ login.php               Admin login form
+    â”œâ”€â”€ dashboard.php           Analytics dashboard + live order feed
+    â”œâ”€â”€ products.php            Manage products (add/edit/delete + image upload)
+    â”œâ”€â”€ orders.php              View/manage all orders, update status, QR per order
+    â”œâ”€â”€ inventory.php           Live inventory manager â€” inline stock editing
+    â””â”€â”€ coupons.php             Create/manage coupons with usage progress bar
 ```
 
 ---
 
-## 🚀 Setup Instructions
+## ðŸš€ Setup Instructions
 
 ### 1. DevCore Library
 
-This project requires the DevCore Shared Library at `../../core/` relative to the project root. Your directory structure should look like:
+This project requires the DevCore Shared Library at `./core/` relative to the project root. Your directory structure should look like:
 
 ```
 your-projects/
-├── core/                     ← DevCore shared library
-│   ├── bootstrap.php
-│   ├── backend/
-│   └── ui/
-└── llivestore/     ← This project
-    ├── index.php
-    └── ...
+â”œâ”€â”€ core/                     â† DevCore shared library
+â”‚   â”œâ”€â”€ bootstrap.php
+â”‚   â”œâ”€â”€ backend/
+â”‚   â””â”€â”€ ui/
+â””â”€â”€ llivestore/     â† This project
+    â”œâ”€â”€ index.php
+    â””â”€â”€ ...
 ```
 
 Clone the shared library:
@@ -98,7 +98,7 @@ mysql -u root -p ecommerce_live_store < database.sql
 
 Copy and edit the config file:
 ```bash
-cp config.php config.php   # It's already in place — just edit it
+cp config.php config.php   # It's already in place â€” just edit it
 ```
 
 Fill in your values:
@@ -145,20 +145,20 @@ Password: admin123
 
 ---
 
-## 🔴 How Live Stock Works
+## ðŸ”´ How Live Stock Works
 
-The live stock system uses **client-side polling** — no WebSockets required.
+The live stock system uses **client-side polling** â€” no WebSockets required.
 
 1. **`/api/live.php`** returns a flat JSON array of all active product IDs + current stock levels on every request. It's a simple, cacheable DB query that runs in < 5ms.
 
 2. **`LivePoller`** (from `devcore.js`) calls this endpoint on a configurable interval:
-   - `index.php` polls every **4 seconds** — updates all product card stock badges
-   - `product.php` polls every **3 seconds** — updates the single product indicator
-   - `admin/inventory.php` polls every **5 seconds** — syncs inline stock inputs
+   - `index.php` polls every **4 seconds** â€” updates all product card stock badges
+   - `product.php` polls every **3 seconds** â€” updates the single product indicator
+   - `admin/inventory.php` polls every **5 seconds** â€” syncs inline stock inputs
 
 3. When stock changes are detected, the JS updates the DOM in-place:
-   - Stock badge text: `"42 in stock"` → `"Only 3 left!"` → `"Out of Stock"`
-   - Badge colour: green → pulsing yellow → red
+   - Stock badge text: `"42 in stock"` â†’ `"Only 3 left!"` â†’ `"Out of Stock"`
+   - Badge colour: green â†’ pulsing yellow â†’ red
    - Add-to-cart button: disabled with "Out of Stock" text when `stock === 0`
 
 4. **What triggers updates:** When a customer places an order (`/api/orders.php` POST), the backend runs `UPDATE products SET stock = stock - qty` inside a transaction. The next poll cycle catches the new value.
@@ -167,7 +167,7 @@ The live stock system uses **client-side polling** — no WebSockets required.
 
 ---
 
-## 🏷️ How the Coupon System Works
+## ðŸ·ï¸ How the Coupon System Works
 
 Coupons support two types: **percent** (e.g. 10% off) and **fixed** (e.g. $20 off).
 
@@ -177,7 +177,7 @@ Coupons support two types: **percent** (e.g. 10% off) and **fixed** (e.g. $20 of
    - Code exists and `active = 1`
    - Not past `expires_at`
    - `uses_count < uses_limit` (or limit is NULL = unlimited)
-   - Current cart subtotal ≥ `min_order`
+   - Current cart subtotal â‰¥ `min_order`
 3. On success, the coupon is stored in `$_SESSION['coupon']`
 4. Every cart/checkout render reads the session coupon and computes the discount
 5. When the order is placed, `uses_count` is incremented atomically
@@ -191,31 +191,31 @@ Coupons support two types: **percent** (e.g. 10% off) and **fixed** (e.g. $20 of
 
 ---
 
-## 📱 How QR Receipts Work
+## ðŸ“± How QR Receipts Work
 
-1. **Token generation** — When an order is placed, a 12-character random hex token is generated: `bin2hex(random_bytes(9))`. This is stored in `orders.token` and is unique per order.
+1. **Token generation** â€” When an order is placed, a 12-character random hex token is generated: `bin2hex(random_bytes(9))`. This is stored in `orders.token` and is unique per order.
 
-2. **QR code** — `order-confirmation.php` calls `QrCode::url()` from the DevCore library, generating a QR image URL that encodes:
+2. **QR code** â€” `order-confirmation.php` calls `QrCode::url()` from the DevCore library, generating a QR image URL that encodes:
    ```
    https://yourstore.com/order-confirmation.php?order=TKN001ABCDEF12
    ```
-   The QR image is served by the free `qrserver.com` API — no library installation required.
+   The QR image is served by the free `qrserver.com` API â€” no library installation required.
 
-3. **Permanent lookup** — The confirmation page reads `?order=TOKEN` from the URL, fetches the order from the DB, and renders the full summary. The token never expires. Anyone with the token (or QR scan) can view the order.
+3. **Permanent lookup** â€” The confirmation page reads `?order=TOKEN` from the URL, fetches the order from the DB, and renders the full summary. The token never expires. Anyone with the token (or QR scan) can view the order.
 
-4. **Admin QR** — `admin/orders.php` renders a small 32×32px QR per order row. Admins can scan it on mobile to pull up the customer-facing confirmation page instantly.
+4. **Admin QR** â€” `admin/orders.php` renders a small 32Ã—32px QR per order row. Admins can scan it on mobile to pull up the customer-facing confirmation page instantly.
 
-5. **Print receipt** — A "Print Receipt" button triggers `window.print()`. CSS `@media print` hides navigation and action buttons, leaving only the order summary and QR code.
+5. **Print receipt** â€” A "Print Receipt" button triggers `window.print()`. CSS `@media print` hides navigation and action buttons, leaving only the order summary and QR code.
 
 ---
 
-## 🗄️ Storage: Local, S3, or R2
+## ðŸ—„ï¸ Storage: Local, S3, or R2
 
 All product image uploads go through `Storage::uploadFile()` from the DevCore library. To swap providers, change **one line** in `config.php`:
 
 ```php
 'storage' => [
-    'driver' => 'local',   // ← change to 's3' or 'r2'
+    'driver' => 'local',   // â† change to 's3' or 'r2'
 ```
 
 ### Local filesystem (default)
@@ -247,18 +247,18 @@ Files are saved to `./uploads/` and served directly. Zero configuration.
 
 ---
 
-## 📊 Sample Data
+## ðŸ“Š Sample Data
 
 The `database.sql` includes:
-- **5 categories** — Electronics, Clothing, Home & Garden, Sports, Books
-- **24 products** — Realistic names, prices $9.99–$599.99, varied stock (including out-of-stock and low-stock items for live demo)
-- **3 coupons** — SAVE10, FLAT20, NEWUSER
-- **40 orders** — Spread over the last 30 days with mixed statuses for chart data
-- **1 admin** — admin@store.com / admin123
+- **5 categories** â€” Electronics, Clothing, Home & Garden, Sports, Books
+- **24 products** â€” Realistic names, prices $9.99â€“$599.99, varied stock (including out-of-stock and low-stock items for live demo)
+- **3 coupons** â€” SAVE10, FLAT20, NEWUSER
+- **40 orders** â€” Spread over the last 30 days with mixed statuses for chart data
+- **1 admin** â€” admin@store.com / admin123
 
 ---
 
-## 🔗 Part of the DevCore Portfolio Suite
+## ðŸ”— Part of the DevCore Portfolio Suite
 
 > **4 industry-specific projects, 1 shared core**
 
@@ -266,15 +266,16 @@ This project is one of four full-stack PHP applications built on the DevCore Sha
 
 | # | Project | Key Feature |
 |---|---|---|
-| 1 | 🛒 **E-commerce Live Store** | Live stock + QR receipts |
-| 2 | 🍽️ Restaurant POS | Live table status + kitchen display |
-| 3 | 🏠 Property Listings | Map integration + enquiry pipeline |
-| 4 | 📅 Booking & Scheduling | Calendar availability + confirmations |
+| 1 | ðŸ›’ **E-commerce Live Store** | Live stock + QR receipts |
+| 2 | ðŸ½ï¸ Restaurant POS | Live table status + kitchen display |
+| 3 | ðŸ  Property Listings | Map integration + enquiry pipeline |
+| 4 | ðŸ“… Booking & Scheduling | Calendar availability + confirmations |
 
-All four projects share the same `core/` library for Database, Auth, Analytics, Storage, QrCode, and Validator — zero code duplication across projects.
+All four projects share the same `core/` library for Database, Auth, Analytics, Storage, QrCode, and Validator â€” zero code duplication across projects.
 
 ---
 
-## 📄 License
+## ðŸ“„ License
 
-MIT — free for personal and commercial use.
+MIT â€” free for personal and commercial use.
+
