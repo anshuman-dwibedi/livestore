@@ -101,8 +101,8 @@ if ($method === 'POST') {
     ]);
     if ($v->fails()) Api::error('Validation failed', 422, $v->errors());
 
-    $imageUrl = '';
-    if (!empty($_FILES['image']['name'])) {
+    $imageUrl = trim((string)($data['image_url'] ?? ''));
+    if ($imageUrl === '' && !empty($_FILES['image']['name'])) {
         try {
             $imageUrl = Storage::uploadFile($_FILES['image'], 'products');
         } catch (Exception $e) {
@@ -151,8 +151,10 @@ if ($method === 'PUT') {
                 'image_url', 'stock', 'low_stock_threshold', 'sku', 'active'];
     $update  = array_intersect_key($data, array_flip($allowed));
 
-    // Handle image upload
-    if (!empty($_FILES['image']['name'])) {
+    // If URL is explicitly provided, honor it; otherwise fallback to uploaded file.
+    if (!empty($update['image_url']) && trim((string)$update['image_url']) !== '') {
+        $update['image_url'] = trim((string)$update['image_url']);
+    } elseif (!empty($_FILES['image']['name'])) {
         try {
             $update['image_url'] = Storage::uploadFile($_FILES['image'], 'products');
         } catch (Exception $e) {

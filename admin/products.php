@@ -220,6 +220,7 @@ function openAdd() {
   document.getElementById('editId').value  = '';
   document.getElementById('modalTitle').textContent = 'Add Product';
   ['fName','fSku','fPrice','fCompare','fDesc','fStock','fImageUrl'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('fImage').value = '';
   document.getElementById('fThreshold').value = '5';
   document.getElementById('curImg').innerHTML = '';
   Modal.open('prodModal');
@@ -239,6 +240,7 @@ async function editProduct(id) {
   document.getElementById('fThreshold').value     = p.low_stock_threshold;
   document.getElementById('fDesc').value          = p.description || '';
   document.getElementById('fImageUrl').value      = p.image_url || '';
+  document.getElementById('fImage').value         = '';
   document.getElementById('curImg').innerHTML     = p.image_url
     ? `<img src="${p.image_url}" style="height:56px;border-radius:var(--dc-radius);object-fit:cover"> <span class="dc-caption">Current image</span>`
     : '';
@@ -298,6 +300,10 @@ async function delProduct(id, name) {
 function fmt(n) { return Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
 
 function previewImageUrl(url) {
+  if (url) {
+    // URL edit is intentional; clear stale file selection so it doesn't override URL on save.
+    document.getElementById('fImage').value = '';
+  }
   const wrap = document.getElementById('curImg');
   if (!url) { wrap.innerHTML = ''; return; }
   wrap.innerHTML = `<img src="${url}" style="height:64px;border-radius:var(--dc-radius);object-fit:cover;border:1px solid var(--dc-border)" onerror="this.style.display='none'"> <span class="dc-caption dc-text-dim">URL preview</span>`;
