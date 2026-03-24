@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../core/bootstrap.php';
+require_once __DIR__ . '/core/bootstrap.php';
 if (empty($_SESSION['cart'])) { header('Location: cart.php'); exit; }
 $apiBase = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? '/checkout.php'), '/') . '/api';
 $baseUrl = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? '/checkout.php'), '/');

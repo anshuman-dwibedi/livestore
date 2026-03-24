@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../core/bootstrap.php';
+require_once __DIR__ . '/core/bootstrap.php';
 $db    = Database::getInstance();
 $token = trim($_GET['order'] ?? '');
 if (!$token) { header('Location: index.php'); exit; }

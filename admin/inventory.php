@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../../core/bootstrap.php';
+require_once dirname(__DIR__) . '/core/bootstrap.php';
 Auth::requireRole('admin', 'login.php');
 $apiBase   = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? '/admin/inventory.php'), '/');
 $storeBase = rtrim(dirname(dirname($_SERVER['SCRIPT_NAME'] ?? '/admin/inventory.php')), '/');

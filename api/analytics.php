@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../../core/bootstrap.php';
+require_once dirname(__DIR__) . '/core/bootstrap.php';
 
 Auth::requireRole('admin', '../admin/login.php');
 

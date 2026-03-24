@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../core/bootstrap.php';
+require_once __DIR__ . '/core/bootstrap.php';
 $apiBase = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? '/cart.php'), '/') . '/api';
 $baseUrl = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? '/cart.php'), '/');
 ?>

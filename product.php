@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../core/bootstrap.php';
+require_once __DIR__ . '/core/bootstrap.php';
 
 $db        = Database::getInstance();
 $productId = (int)($_GET['id'] ?? 0);

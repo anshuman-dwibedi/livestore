@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../../core/bootstrap.php';
+require_once dirname(__DIR__) . '/core/bootstrap.php';
 
 if (Auth::check() && Auth::role() === 'admin') { header('Location: dashboard.php'); exit; }
 
