@@ -1,10 +1,10 @@
-﻿# LiveStore - E-Commerce Live Inventory Platform
+# LiveStore - E-Commerce Live Inventory Platform
 
 A full-featured e-commerce store with live inventory tracking, real-time stock counters, shopping cart, coupon system, and QR-based order receipts. Built on the DevCore Shared Library with comprehensive admin dashboard.
 
 Perfect for small to medium-sized online retail operations that need inventory visibility and customer experience in one platform.
 
-**Part of the DevCore Suite** â€” a collection of business-ready web applications sharing a common core library.
+**Part of the DevCore Suite** — a collection of business-ready web applications sharing a common core library.
 
 ---
 
@@ -13,14 +13,14 @@ Perfect for small to medium-sized online retail operations that need inventory v
 | Feature | Description |
 |---------|-------------|
 | Live Stock Counters | Product cards show real-time inventory levels updating every 4 seconds |
-| Stock Status Indicators | Green (plenty) â†’ Yellow pulsing (low) â†’ Red disabled (out of stock) |
+| Stock Status Indicators | Green (plenty) → Yellow pulsing (low) → Red disabled (out of stock) |
 | Product Catalog | Browse categories, search, sort by price/popularity, pagination |
 | Product Detail Pages | Hero image, gallery thumbnails, live stock, customer reviews, add to cart |
 | Session Cart | Add/update/remove items with quantity validation against live stock |
 | Coupon System | Percent and fixed-amount discount codes with expiry dates, usage limits, minimum orders |
 | QR Order Receipts | Every order gets unique token and scannable QR code linking to order summary |
 | Analytics Dashboard | Revenue KPIs, order counts, average order value, charts, live order feed |
-| Image Storage | Upload product images to local filesystem, AWS S3, or Cloudflare R2 â€” change one config line |
+| Image Storage | Upload product images to local filesystem, AWS S3, or Cloudflare R2 — change one config line |
 | Admin Panel | Manage products, orders, inventory, coupons behind session-based auth |
 
 ---
@@ -44,36 +44,36 @@ Perfect for small to medium-sized online retail operations that need inventory v
 
 ```
 livestore/
-â”œâ”€â”€ index.php                   Product grid with live stock updates
-â”œâ”€â”€ product.php                 Single product detail + add to cart
-â”œâ”€â”€ cart.php                    Shopping cart with coupon field
-â”œâ”€â”€ checkout.php                Order form (name, email, address)
-â”œâ”€â”€ order-confirmation.php      Post-order summary + QR code receipt
-â”œâ”€â”€ config.example.php          Configuration template
-â”œâ”€â”€ database.sql                Schema + sample products and coupons
-â”œâ”€â”€ .env.example                Environment variables template
-â”‚
-â”œâ”€â”€ api/
-â”‚   â”œâ”€â”€ products.php            GET list/filter, POST create, PUT update, DELETE (admin)
-â”‚   â”œâ”€â”€ cart.php                GET cart, POST add, PUT quantity, DELETE remove
-â”‚   â”œâ”€â”€ orders.php              POST create, GET list/view (admin), PUT status (admin)
-â”‚   â”œâ”€â”€ coupons.php             POST validate (public), GET/PUT/DELETE (admin)
-â”‚   â”œâ”€â”€ live.php                GET real-time stock + recent orders (public polling)
-â”‚   â”œâ”€â”€ analytics.php           GET dashboard stats (admin only)
-â”‚   â””â”€â”€ logout.php              Admin session logout redirect
-â”‚
-â”œâ”€â”€ admin/
-â”‚   â”œâ”€â”€ login.php               Admin authentication
-â”‚   â”œâ”€â”€ dashboard.php           Analytics + live order feed
-â”‚   â”œâ”€â”€ products.php            Product management (add/edit/delete + image)
-â”‚   â”œâ”€â”€ orders.php              Order management + status tracking
-â”‚   â”œâ”€â”€ inventory.php           Live stock manager with inline editing
-â”‚   â””â”€â”€ coupons.php             Coupon management with usage tracking
-â”‚
-â””â”€â”€ core/                       DevCore shared library (git submodule)
-    â”œâ”€â”€ bootstrap.php           Autoloader + config loader
-    â”œâ”€â”€ backend/                PHP classes (Database, Api, Auth, Storage, etc.)
-    â””â”€â”€ ui/                     CSS framework + JavaScript utilities
+├── index.php                   Product grid with live stock updates
+├── product.php                 Single product detail + add to cart
+├── cart.php                    Shopping cart with coupon field
+├── checkout.php                Order form (name, email, address)
+├── order-confirmation.php      Post-order summary + QR code receipt
+├── config.example.php          Configuration template
+├── database.sql                Schema + sample products and coupons
+├── .env.example                Environment variables template
+│
+├── api/
+│   ├── products.php            GET list/filter, POST create, PUT update, DELETE (admin)
+│   ├── cart.php                GET cart, POST add, PUT quantity, DELETE remove
+│   ├── orders.php              POST create, GET list/view (admin), PUT status (admin)
+│   ├── coupons.php             POST validate (public), GET/PUT/DELETE (admin)
+│   ├── live.php                GET real-time stock + recent orders (public polling)
+│   ├── analytics.php           GET dashboard stats (admin only)
+│   └── logout.php              Admin session logout redirect
+│
+├── admin/
+│   ├── login.php               Admin authentication
+│   ├── dashboard.php           Analytics + live order feed
+│   ├── products.php            Product management (add/edit/delete + image)
+│   ├── orders.php              Order management + status tracking
+│   ├── inventory.php           Live stock manager with inline editing
+│   └── coupons.php             Coupon management with usage tracking
+│
+└── core/                       DevCore shared library (git submodule)
+    ├── bootstrap.php           Autoloader + config loader
+    ├── backend/                PHP classes (Database, Api, Auth, Storage, etc.)
+    └── ui/                     CSS framework + JavaScript utilities
 ```
 
 ---
@@ -201,9 +201,9 @@ Password: admin123
 Database settings, app URL, and storage driver. See Setup Instructions above for all options.
 
 Sample coupons in database:
-- `SAVE10` â€” 10% off (no minimum)
-- `FLAT20` â€” $20 off (minimum $100 order)
-- `NEWUSER` â€” 15% off (1 use limit)
+- `SAVE10` — 10% off (no minimum)
+- `FLAT20` — $20 off (minimum $100 order)
+- `NEWUSER` — 15% off (1 use limit)
 
 ---
 
@@ -211,7 +211,7 @@ Sample coupons in database:
 
 ### Live Stock System
 
-The stock counter system uses **client-side polling** â€” no WebSockets required.
+The stock counter system uses **client-side polling** — no WebSockets required.
 
 1. `/api/live.php` returns all product IDs and current stock levels (single fast DB query, <5ms)
 2. `LivePoller` JavaScript calls this every **4 seconds** on index.php and product.php
@@ -221,7 +221,7 @@ The stock counter system uses **client-side polling** â€” no WebSockets req
    - Red: out of stock (add-to-cart disabled)
 4. Low stock threshold is per-product (`low_stock_threshold` column, default: 5)
 
-**What triggers updates:** Customer places order â†’ `UPDATE products SET stock = stock - qty` â†’ next poll cycle shows new value
+**What triggers updates:** Customer places order → `UPDATE products SET stock = stock - qty` → next poll cycle shows new value
 
 ### Coupon System
 
@@ -242,7 +242,7 @@ Coupons support two types: **percent** (e.g., 10% off) and **fixed** (e.g., $20 
 
 ### QR Receipts
 
-1. Order placed â†’ 12-character random hex token generated and stored in `orders.token`
+1. Order placed → 12-character random hex token generated and stored in `orders.token`
 2. `order-confirmation.php` generates QR code via qrserver.com API encoding:
    ```
    https://yourstore.com/order-confirmation.php?order=TOKEN
@@ -366,9 +366,8 @@ Create `.env` or configure in config.php:
 
 ## License
 
-MIT License â€” see LICENSE file for details.
+MIT License — see LICENSE file for details.
 
 ---
 
 **Questions?** Visit the [DevCore Shared Library](https://github.com/anshuman-dwibedi/devcore-shared) repository.
-
