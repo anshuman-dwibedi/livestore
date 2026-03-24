@@ -54,11 +54,12 @@ if ($method === 'GET') {
     }
 
     $whereSQL = implode(' AND ', $where);
+    // Keep sort deterministic across pages: ties must include a stable secondary key.
     $sort     = match ($_GET['sort'] ?? 'newest') {
-        'price_asc'  => 'p.price ASC',
-        'price_desc' => 'p.price DESC',
-        'name'       => 'p.name ASC',
-        default      => 'p.created_at DESC',
+        'price_asc'  => 'p.price ASC, p.id DESC',
+        'price_desc' => 'p.price DESC, p.id DESC',
+        'name'       => 'p.name ASC, p.id DESC',
+        default      => 'p.created_at DESC, p.id DESC',
     };
 
     $page    = max(1, (int)($_GET['page'] ?? 1));
