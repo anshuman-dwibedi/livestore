@@ -1,281 +1,374 @@
-﻿# ðŸ›’ E-commerce Live Store (Livestore)
+﻿# LiveStore - E-Commerce Live Inventory Platform
 
-> A full-featured e-commerce store with live inventory, real-time stock counters, and QR order receipts â€” built on the [DevCore Shared Library](https://github.com/anshuman-dwibedi/devcore-shared).
+A full-featured e-commerce store with live inventory tracking, real-time stock counters, shopping cart, coupon system, and QR-based order receipts. Built on the DevCore Shared Library with comprehensive admin dashboard.
 
----
+Perfect for small to medium-sized online retail operations that need inventory visibility and customer experience in one platform.
 
-## âœ¨ Features
-
-- ðŸ”´ **Live Stock Counters** â€” Product cards show real-time stock levels, updating every 4 seconds via polling. Stock badges pulse yellow when running low and turn red when sold out. Add-to-cart buttons disable live when stock hits zero.
-- ðŸ“¦ **Full Product Catalog** â€” Category browsing, search, sort, pagination. Hero images with gallery thumbnails on product pages.
-- ðŸ›’ **Session Cart** â€” Add, update, remove items. Quantity validation against live stock. Persistent across page navigations.
-- ðŸ·ï¸ **Coupon System** â€” Apply discount codes at cart or checkout. Supports percent (`SAVE10`) and fixed-amount (`FLAT20`) coupons with expiry dates, usage limits, and minimum order requirements.
-- ðŸ“± **QR Order Receipts** â€” Every order gets a unique token and a QR code that permanently links back to the order summary. Screenshot it, print it, scan it forever.
-- ðŸ“Š **Analytics Dashboard** â€” Revenue today, order counts, avg order value, 30-day revenue line chart, top products bar chart, orders-by-status doughnut, and a live order feed.
-- ðŸ–¼ï¸ **Pluggable Image Storage** â€” Upload product images to local filesystem, AWS S3, or Cloudflare R2 â€” change one line in `config.php`.
-- ðŸ” **Admin Panel** â€” Manage products, orders, inventory, and coupons behind session-based auth.
+**Part of the DevCore Suite** â€” a collection of business-ready web applications sharing a common core library.
 
 ---
 
-## ðŸ§° Tech Stack
+## Features
+
+| Feature | Description |
+|---------|-------------|
+| Live Stock Counters | Product cards show real-time inventory levels updating every 4 seconds |
+| Stock Status Indicators | Green (plenty) â†’ Yellow pulsing (low) â†’ Red disabled (out of stock) |
+| Product Catalog | Browse categories, search, sort by price/popularity, pagination |
+| Product Detail Pages | Hero image, gallery thumbnails, live stock, customer reviews, add to cart |
+| Session Cart | Add/update/remove items with quantity validation against live stock |
+| Coupon System | Percent and fixed-amount discount codes with expiry dates, usage limits, minimum orders |
+| QR Order Receipts | Every order gets unique token and scannable QR code linking to order summary |
+| Analytics Dashboard | Revenue KPIs, order counts, average order value, charts, live order feed |
+| Image Storage | Upload product images to local filesystem, AWS S3, or Cloudflare R2 â€” change one config line |
+| Admin Panel | Manage products, orders, inventory, coupons behind session-based auth |
+
+---
+
+## Tech Stack
 
 | Layer | Technology |
-|---|---|
-| Backend | PHP 8.1+ |
+|-------|-----------|
+| Backend | PHP 8.1+ with DevCore framework |
 | Database | MySQL 8 / MariaDB 10.6+ |
-| Frontend | Vanilla JS + DevCore UI (`devcore.css` / `devcore.js`) |
-| Charts | DCChart (Chart.js wrapper via devcore.js) |
-| QR Codes | QrCode::url() via qrserver.com API (no library needed) |
-| Storage | Local filesystem (swap to S3 or R2 in config) |
-| Session | PHP native sessions (cart + auth) |
-| Shared Core | [DevCore Shared Library](https://github.com/anshuman-dwibedi/devcore-shared) |
+| Frontend | Vanilla JavaScript ES2022 + DevCore UI library |
+| Charts | Chart.js via DevCore wrapper |
+| QR Codes | qrserver.com API (no library dependencies) |
+| Image Storage | Local filesystem (swap to S3 or R2 in config) |
+| Sessions | PHP native sessions for cart and auth |
+| Shared Core | DevCore Shared Library (git submodule at ./core/) |
 
 ---
 
-## ðŸ“ Folder Structure
+## Project Structure
 
 ```
 livestore/
-â”œâ”€â”€ index.php                   Storefront â€” product grid with live stock
-â”œâ”€â”€ product.php                 Single product â€” gallery, details, live stock, add to cart
-â”œâ”€â”€ cart.php                    Cart â€” items, quantities, coupon, totals
-â”œâ”€â”€ checkout.php                Checkout form â€” name, email, address, place order
-â”œâ”€â”€ order-confirmation.php      Post-order â€” summary + QR code receipt
-â”œâ”€â”€ config.php                  Local config (DB, storage, app URL)
-â”œâ”€â”€ database.sql                Full schema + sample data
+â”œâ”€â”€ index.php                   Product grid with live stock updates
+â”œâ”€â”€ product.php                 Single product detail + add to cart
+â”œâ”€â”€ cart.php                    Shopping cart with coupon field
+â”œâ”€â”€ checkout.php                Order form (name, email, address)
+â”œâ”€â”€ order-confirmation.php      Post-order summary + QR code receipt
+â”œâ”€â”€ config.example.php          Configuration template
+â”œâ”€â”€ database.sql                Schema + sample products and coupons
+â”œâ”€â”€ .env.example                Environment variables template
 â”‚
 â”œâ”€â”€ api/
-â”‚   â”œâ”€â”€ products.php            GET list/single, POST create, PUT update, DELETE
-â”‚   â”œâ”€â”€ cart.php                GET cart, POST add, PUT qty, DELETE remove
-â”‚   â”œâ”€â”€ orders.php              POST place, GET list/single, PUT update status
-â”‚   â”œâ”€â”€ coupons.php             POST validate/create, GET list, PUT toggle, DELETE
+â”‚   â”œâ”€â”€ products.php            GET list/filter, POST create, PUT update, DELETE (admin)
+â”‚   â”œâ”€â”€ cart.php                GET cart, POST add, PUT quantity, DELETE remove
+â”‚   â”œâ”€â”€ orders.php              POST create, GET list/view (admin), PUT status (admin)
+â”‚   â”œâ”€â”€ coupons.php             POST validate (public), GET/PUT/DELETE (admin)
+â”‚   â”œâ”€â”€ live.php                GET real-time stock + recent orders (public polling)
 â”‚   â”œâ”€â”€ analytics.php           GET dashboard stats (admin only)
-â”‚   â”œâ”€â”€ live.php                GET live stock + recent orders (polling endpoint)
-â”‚   â””â”€â”€ logout.php              Session logout redirect
+â”‚   â””â”€â”€ logout.php              Admin session logout redirect
 â”‚
-â””â”€â”€ admin/
-    â”œâ”€â”€ login.php               Admin login form
-    â”œâ”€â”€ dashboard.php           Analytics dashboard + live order feed
-    â”œâ”€â”€ products.php            Manage products (add/edit/delete + image upload)
-    â”œâ”€â”€ orders.php              View/manage all orders, update status, QR per order
-    â”œâ”€â”€ inventory.php           Live inventory manager â€” inline stock editing
-    â””â”€â”€ coupons.php             Create/manage coupons with usage progress bar
+â”œâ”€â”€ admin/
+â”‚   â”œâ”€â”€ login.php               Admin authentication
+â”‚   â”œâ”€â”€ dashboard.php           Analytics + live order feed
+â”‚   â”œâ”€â”€ products.php            Product management (add/edit/delete + image)
+â”‚   â”œâ”€â”€ orders.php              Order management + status tracking
+â”‚   â”œâ”€â”€ inventory.php           Live stock manager with inline editing
+â”‚   â””â”€â”€ coupons.php             Coupon management with usage tracking
+â”‚
+â””â”€â”€ core/                       DevCore shared library (git submodule)
+    â”œâ”€â”€ bootstrap.php           Autoloader + config loader
+    â”œâ”€â”€ backend/                PHP classes (Database, Api, Auth, Storage, etc.)
+    â””â”€â”€ ui/                     CSS framework + JavaScript utilities
 ```
 
 ---
 
-## ðŸš€ Setup Instructions
+## Setup Instructions
 
-### 1. DevCore Library
+### 1. Clone DevCore Shared Library
 
-This project requires the DevCore Shared Library at `./core/` relative to the project root. Your directory structure should look like:
-
-```
-your-projects/
-â”œâ”€â”€ core/                     â† DevCore shared library
-â”‚   â”œâ”€â”€ bootstrap.php
-â”‚   â”œâ”€â”€ backend/
-â”‚   â””â”€â”€ ui/
-â””â”€â”€ llivestore/     â† This project
-    â”œâ”€â”€ index.php
-    â””â”€â”€ ...
-```
-
-Clone the shared library:
 ```bash
-git clone https://github.com/devcore/core
+git clone https://github.com/anshuman-dwibedi/devcore-shared.git core
 ```
 
-### 2. Database
+Or if using this as a git submodule, it's automatically initialized:
+```bash
+git clone --recursive https://github.com/anshuman-dwibedi/livestore.git
+```
 
-Create a MySQL database and import the schema:
+### 2. Create Database
+
 ```bash
 mysql -u root -p -e "CREATE DATABASE ecommerce_live_store CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 mysql -u root -p ecommerce_live_store < database.sql
 ```
 
-### 3. Config
+Database includes sample products and coupons ready to use.
 
-Copy and edit the config file:
+### 3. Configure Application
+
 ```bash
-cp config.php config.php   # It's already in place â€” just edit it
+cp config.example.php config.php
 ```
 
-Fill in your values:
+Edit `config.php`:
+
 ```php
 return [
-    'db_host'  => 'localhost',
-    'db_name'  => 'ecommerce_live_store',
-    'db_user'  => 'root',
-    'db_pass'  => 'your_password',
-    'app_url'  => 'http://localhost/llivestore',
-    'storage'  => [
-        'driver' => 'local',
-        'local'  => [
-            'root'     => __DIR__ . '/uploads',
-            'base_url' => 'http://localhost/llivestore/uploads',
-        ],
-    ],
+    'db_host'    => 'localhost',
+    'db_name'    => 'ecommerce_live_store',
+    'db_user'    => 'root',
+    'db_pass'    => 'your_password',
+    'app_name'   => 'LiveStore',
+    'app_url'    => 'http://localhost/livestore',
+    'debug'      => true,  // set false in production
+    'api_secret' => 'your-secure-random-string',
 ];
 ```
 
-### 4. Uploads folder
+### 4. Configure Storage
 
+Choose where to store product images:
+
+**Local filesystem (default):**
+```php
+'storage' => [
+    'driver' => 'local',
+    'local' => [
+        'root'     => __DIR__ . '/uploads',
+        'base_url' => 'http://localhost/livestore/uploads',
+    ],
+],
+```
+
+**AWS S3:**
+```php
+'storage' => [
+    'driver' => 's3',
+    's3' => [
+        'key'      => 'YOUR_AWS_KEY',
+        'secret'   => 'YOUR_AWS_SECRET',
+        'bucket'   => 'livestore-products',
+        'region'   => 'us-east-1',
+        'acl'      => 'public-read',
+    ],
+],
+```
+
+**Cloudflare R2:**
+```php
+'storage' => [
+    'driver' => 'r2',
+    'r2' => [
+        'account_id' => 'YOUR_CF_ACCOUNT_ID',
+        'key'        => 'YOUR_R2_KEY',
+        'secret'     => 'YOUR_R2_SECRET',
+        'bucket'     => 'livestore',
+        'base_url'   => 'https://pub-xxxx.r2.dev',
+    ],
+],
+```
+
+Create uploads folder:
 ```bash
 mkdir -p uploads
 chmod 755 uploads
 ```
 
-### 5. Web server
+### 5. Start Web Server
 
-Point your web server document root to your projects folder, or use PHP's built-in server:
+Using PHP built-in server:
 ```bash
-cd your-projects
 php -S localhost:8000
 ```
-Then visit: `http://localhost:8000/llivestore/`
 
-### Admin credentials
+Or configure Apache/Nginx to point to project root.
 
+### 6. Access Application
+
+- **Storefront:** http://localhost:8000/livestore/index.php
+- **Admin Panel:** http://localhost:8000/livestore/admin/login.php
+
+**Default Admin Credentials:**
 ```
-URL:      http://localhost:8000/llivestore/admin/login.php
-Email:    admin@store.com
+Email: admin@livestore.com
 Password: admin123
 ```
 
----
-
-## ðŸ”´ How Live Stock Works
-
-The live stock system uses **client-side polling** â€” no WebSockets required.
-
-1. **`/api/live.php`** returns a flat JSON array of all active product IDs + current stock levels on every request. It's a simple, cacheable DB query that runs in < 5ms.
-
-2. **`LivePoller`** (from `devcore.js`) calls this endpoint on a configurable interval:
-   - `index.php` polls every **4 seconds** â€” updates all product card stock badges
-   - `product.php` polls every **3 seconds** â€” updates the single product indicator
-   - `admin/inventory.php` polls every **5 seconds** â€” syncs inline stock inputs
-
-3. When stock changes are detected, the JS updates the DOM in-place:
-   - Stock badge text: `"42 in stock"` â†’ `"Only 3 left!"` â†’ `"Out of Stock"`
-   - Badge colour: green â†’ pulsing yellow â†’ red
-   - Add-to-cart button: disabled with "Out of Stock" text when `stock === 0`
-
-4. **What triggers updates:** When a customer places an order (`/api/orders.php` POST), the backend runs `UPDATE products SET stock = stock - qty` inside a transaction. The next poll cycle catches the new value.
-
-5. The "Only 3 left!" threshold is **per-product** (`low_stock_threshold` column, default 5).
+> Change these credentials immediately in production.
 
 ---
 
-## ðŸ·ï¸ How the Coupon System Works
+## Configuration
 
-Coupons support two types: **percent** (e.g. 10% off) and **fixed** (e.g. $20 off).
+### config.example.php
+
+Database settings, app URL, and storage driver. See Setup Instructions above for all options.
+
+Sample coupons in database:
+- `SAVE10` â€” 10% off (no minimum)
+- `FLAT20` â€” $20 off (minimum $100 order)
+- `NEWUSER` â€” 15% off (1 use limit)
+
+---
+
+## How It Works
+
+### Live Stock System
+
+The stock counter system uses **client-side polling** â€” no WebSockets required.
+
+1. `/api/live.php` returns all product IDs and current stock levels (single fast DB query, <5ms)
+2. `LivePoller` JavaScript calls this every **4 seconds** on index.php and product.php
+3. Stock badge updates in real-time:
+   - Green: plenty in stock
+   - Yellow pulsing: low stock threshold
+   - Red: out of stock (add-to-cart disabled)
+4. Low stock threshold is per-product (`low_stock_threshold` column, default: 5)
+
+**What triggers updates:** Customer places order â†’ `UPDATE products SET stock = stock - qty` â†’ next poll cycle shows new value
+
+### Coupon System
+
+Coupons support two types: **percent** (e.g., 10% off) and **fixed** (e.g., $20 off).
 
 **Validation flow:**
-1. Customer enters code on the cart page and clicks Apply
-2. `POST /api/coupons.php` checks:
-   - Code exists and `active = 1`
-   - Not past `expires_at`
-   - `uses_count < uses_limit` (or limit is NULL = unlimited)
-   - Current cart subtotal â‰¥ `min_order`
-3. On success, the coupon is stored in `$_SESSION['coupon']`
-4. Every cart/checkout render reads the session coupon and computes the discount
-5. When the order is placed, `uses_count` is incremented atomically
+1. Customer enters code on cart page
+2. `POST /api/coupons.php` validates:
+   - Code exists and is active
+   - Not past expiry date
+   - Usage count < limit (or unlimited)
+   - Cart subtotal >= minimum order
+3. On success, coupon stored in `$_SESSION['coupon']`
+4. Discount calculated on render
+5. When order placed, `uses_count` incremented atomically
 
-**Sample codes in the demo:**
-| Code | Type | Value | Condition |
-|---|---|---|---|
-| `SAVE10` | Percent | 10% off | No minimum |
-| `FLAT20` | Fixed | $20 off | $100 minimum order |
-| `NEWUSER` | Percent | 15% off | 1 use limit |
+**Sample codes:** See configuration section above.
 
----
+### QR Receipts
 
-## ðŸ“± How QR Receipts Work
-
-1. **Token generation** â€” When an order is placed, a 12-character random hex token is generated: `bin2hex(random_bytes(9))`. This is stored in `orders.token` and is unique per order.
-
-2. **QR code** â€” `order-confirmation.php` calls `QrCode::url()` from the DevCore library, generating a QR image URL that encodes:
+1. Order placed â†’ 12-character random hex token generated and stored in `orders.token`
+2. `order-confirmation.php` generates QR code via qrserver.com API encoding:
    ```
-   https://yourstore.com/order-confirmation.php?order=TKN001ABCDEF12
+   https://yourstore.com/order-confirmation.php?order=TOKEN
    ```
-   The QR image is served by the free `qrserver.com` API â€” no library installation required.
+3. Customer scans QR anytime to view order summary
+4. Order remains accessible forever via token
 
-3. **Permanent lookup** â€” The confirmation page reads `?order=TOKEN` from the URL, fetches the order from the DB, and renders the full summary. The token never expires. Anyone with the token (or QR scan) can view the order.
+### Analytics Dashboard
 
-4. **Admin QR** â€” `admin/orders.php` renders a small 32Ã—32px QR per order row. Admins can scan it on mobile to pull up the customer-facing confirmation page instantly.
+Dashboard tracks:
+- Revenue today, this month, total
+- Order count, average order value
+- 30-day revenue trend chart
+- Top products bar chart
+- Orders by status doughnut chart
+- Live order feed
 
-5. **Print receipt** â€” A "Print Receipt" button triggers `window.print()`. CSS `@media print` hides navigation and action buttons, leaving only the order summary and QR code.
+Data refreshes every 30 seconds via `/api/analytics.php`.
 
----
+### Shopping Cart Mechanism
 
-## ðŸ—„ï¸ Storage: Local, S3, or R2
+Cart uses **PHP sessions** for persistence, JavaScript for rendering:
 
-All product image uploads go through `Storage::uploadFile()` from the DevCore library. To swap providers, change **one line** in `config.php`:
-
-```php
-'storage' => [
-    'driver' => 'local',   // â† change to 's3' or 'r2'
+```javascript
+// Customer adds item to cart
+DC.post('api/cart.php' { product_id, qty })
+  .then(() => {
+    // Cart updated in $_SESSION['cart']
+    // Re-render cart sidebar from JavaScript
+  });
 ```
 
-### Local filesystem (default)
-Files are saved to `./uploads/` and served directly. Zero configuration.
-
-### AWS S3
-```php
-'driver' => 's3',
-'s3' => [
-    'key'    => 'AKIAIOSFODNN7EXAMPLE',
-    'secret' => 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
-    'bucket' => 'my-ecommerce-bucket',
-    'region' => 'us-east-1',
-    'acl'    => 'public-read',
-],
-```
-
-### Cloudflare R2
-```php
-'driver' => 'r2',
-'r2' => [
-    'account_id' => 'abc123def456',
-    'key'        => 'r2-access-key',
-    'secret'     => 'r2-secret-key',
-    'bucket'     => 'my-r2-bucket',
-    'base_url'   => 'https://pub-abc.r2.dev',
-],
-```
+Cart validates quantity against live stock. Out-of-stock items cannot be added. Checkout validates again before order creation.
 
 ---
 
-## ðŸ“Š Sample Data
+## API Endpoints
 
-The `database.sql` includes:
-- **5 categories** â€” Electronics, Clothing, Home & Garden, Sports, Books
-- **24 products** â€” Realistic names, prices $9.99â€“$599.99, varied stock (including out-of-stock and low-stock items for live demo)
-- **3 coupons** â€” SAVE10, FLAT20, NEWUSER
-- **40 orders** â€” Spread over the last 30 days with mixed statuses for chart data
-- **1 admin** â€” admin@store.com / admin123
-
----
-
-## ðŸ”— Part of the DevCore Portfolio Suite
-
-> **4 industry-specific projects, 1 shared core**
-
-This project is one of four full-stack PHP applications built on the DevCore Shared Library:
-
-| # | Project | Key Feature |
-|---|---|---|
-| 1 | ðŸ›’ **E-commerce Live Store** | Live stock + QR receipts |
-| 2 | ðŸ½ï¸ Restaurant POS | Live table status + kitchen display |
-| 3 | ðŸ  Property Listings | Map integration + enquiry pipeline |
-| 4 | ðŸ“… Booking & Scheduling | Calendar availability + confirmations |
-
-All four projects share the same `core/` library for Database, Auth, Analytics, Storage, QrCode, and Validator â€” zero code duplication across projects.
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| GET | /api/products.php | No | List products with filters (category, price, search) |
+| POST | /api/products.php | Admin | Create product with image upload |
+| PUT | /api/products.php?id=X | Admin | Update product details and image |
+| DELETE | /api/products.php?id=X | Admin | Delete product and remove images |
+| GET | /api/cart.php | No | Get current cart from session |
+| POST | /api/cart.php | No | Add item to cart |
+| PUT | /api/cart.php?id=X | No | Update item quantity |
+| DELETE | /api/cart.php?id=X | No | Remove item from cart |
+| POST | /api/orders.php | No | Create new order from cart |
+| GET | /api/orders.php | Admin | List all orders with filtering |
+| GET | /api/orders.php?id=X | No/Admin | View single order (public via token, admin via session) |
+| PUT | /api/orders.php?id=X | Admin | Update order status (processing, shipped, delivered, etc.) |
+| POST | /api/coupons.php | No | Validate coupon code |
+| GET | /api/coupons.php | Admin | List all coupons |
+| PUT | /api/coupons.php?id=X | Admin | Toggle coupon Active/Inactive |
+| DELETE | /api/coupons.php?id=X | Admin | Delete coupon |
+| GET | /api/live.php | No | Real-time product stock + recent orders (polling endpoint) |
+| GET | /api/analytics.php | Admin | Dashboard statistics and charts |
+| GET | /api/logout.php | Admin | Admin logout redirect |
 
 ---
 
-## ðŸ“„ License
+## Troubleshooting
 
-MIT â€” free for personal and commercial use.
+**Database not found**
+- Create database: `mysql -u root -p -e "CREATE DATABASE ecommerce_live_store;"`
+- Import schema: `mysql -u root -p ecommerce_live_store < database.sql`
+- Verify config.php lists correct database name
+
+**"Cannot include core/bootstrap.php"**
+- Clone DevCore: `git clone https://github.com/anshuman-dwibedi/devcore-shared.git core`
+- Or update submodule: `git submodule update --init`
+
+**Stock not updating in real-time**
+- Check browser console for JavaScript errors
+- Verify `/api/live.php` returns valid JSON
+- Ensure polling interval is reasonable (default: 4 seconds)
+
+**Coupon code not working**
+- Verify code exists in database: `SELECT * FROM coupons WHERE code = 'SAVE10';`
+- Check expiry date: `SELECT expires_at FROM coupons WHERE code = 'SAVE10';`
+- Check usage count: `SELECT uses_count, uses_limit FROM coupons WHERE code = 'SAVE10';`
+- Verify minimum order met: `SELECT min_order FROM coupons;`
+
+**Images not uploading**
+- Ensure uploads folder exists and is writable: `chmod 755 uploads/`
+- Verify storage backend in config.php is correct
+- Check disk space available on server
+
+**Cart empty after page reload**
+- Verify PHP sessions are enabled in php.ini
+- Check session.save_path is writable: `php -r "echo ini_get('session.save_path');"`
+
+**Admin login returns to login repeatedly**
+- Check database has users: `SELECT COUNT(*) FROM users;`
+- Verify session integrity: Clear browser cookies/cache
+- Reset admin password via database if needed
+
+---
+
+## Environment Variables
+
+Create `.env` or configure in config.php:
+
+| Variable | Purpose |
+|----------|---------|
+| DB_HOST | MySQL hostname (default: localhost) |
+| DB_NAME | Database name (default: ecommerce_live_store) |
+| DB_USER | Database username (default: root) |
+| DB_PASS | Database password |
+| APP_NAME | Application title in UI |
+| APP_URL | Base URL for cart, checkout, order links |
+| DEBUG | Enable debug mode (true/false) |
+| API_SECRET | Secret for API bearer token validation |
+| STORAGE_DRIVER | Product image storage: 'local', 's3', or 'r2' |
+| UPLOADS_PATH | Path to product images folder |
+| CART_SESSION_KEY | Session key for cart data (advanced) |
+| USER_SESSION_NAME | Session name for authentication (advanced) |
+
+---
+
+## License
+
+MIT License â€” see LICENSE file for details.
+
+---
+
+**Questions?** Visit the [DevCore Shared Library](https://github.com/anshuman-dwibedi/devcore-shared) repository.
 
