@@ -4,6 +4,10 @@ A full-featured e-commerce store with live inventory tracking, real-time stock c
 
 Perfect for small to medium-sized online retail operations that need inventory visibility and customer experience in one platform.
 
+## Live Deployment
+
+- Production Website: https://livestore.42web.io
+
 **Part of the DevCore Suite** — a collection of business-ready web applications sharing a common core library.
 
 ---
