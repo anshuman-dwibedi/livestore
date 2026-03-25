@@ -339,10 +339,12 @@ const livePoller = new LivePoller(`${API_BASE}/live.php`, res => {
   (res.data?.stocks || []).forEach(item => {
     const badge = document.querySelector(`.stock-badge[data-id="${item.product_id}"]`);
     if (!badge) return;
-    const isOut = item.stock === 0;
-    const isLow = !isOut && item.stock <= 5;
+    const stock = Number(item.stock || 0);
+    const threshold = Number(item.low_stock_threshold || 5);
+    const isOut = stock === 0;
+    const isLow = !isOut && stock <= threshold;
     badge.className = `dc-badge ${isOut?'dc-badge-danger':isLow?'dc-badge-warning':'dc-badge-success'} stock-badge${isLow&&!isOut?' stock-pulse':''}`;
-    badge.textContent = isOut ? 'Out of Stock' : isLow ? `Only ${item.stock} left` : `${item.stock} in stock`;
+    badge.textContent = isOut ? 'Out of Stock' : isLow ? `Only ${stock} left` : `${stock} in stock`;
     const card = document.getElementById(`pc-${item.product_id}`);
     if (card) {
       const btn = card.querySelector('.dc-btn-primary');
