@@ -179,6 +179,49 @@ const API_BASE = '<?= $apiBase ?>';
 const BASE_URL = '<?= $baseUrl ?>';
 let currentPage = 1, totalPages = 1, currentCat = '', debTimer;
 
+function initFiltersFromUrl() {
+  const url = new URL(window.location.href);
+  const qCategory = (url.searchParams.get('category') || '').trim();
+  const qSort = (url.searchParams.get('sort') || '').trim();
+  const qSearch = (url.searchParams.get('search') || '').trim();
+
+  if (qCategory) {
+    const tab = document.querySelector(`.cat-tab[data-cat="${qCategory}"]`);
+    if (tab) {
+      document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      currentCat = qCategory;
+    }
+  }
+
+  if (qSort && document.getElementById('fSort').querySelector(`option[value="${qSort}"]`)) {
+    document.getElementById('fSort').value = qSort;
+  }
+
+  if (qSearch) {
+    document.getElementById('fSearch').value = qSearch;
+  }
+}
+
+function syncUrlState(page = currentPage) {
+  const url = new URL(window.location.href);
+  if (currentCat) url.searchParams.set('category', currentCat);
+  else url.searchParams.delete('category');
+
+  const sort = document.getElementById('fSort').value;
+  if (sort && sort !== 'newest') url.searchParams.set('sort', sort);
+  else url.searchParams.delete('sort');
+
+  const search = document.getElementById('fSearch').value.trim();
+  if (search) url.searchParams.set('search', search);
+  else url.searchParams.delete('search');
+
+  if (page > 1) url.searchParams.set('page', String(page));
+  else url.searchParams.delete('page');
+
+  window.history.replaceState({}, '', url.toString());
+}
+
 function debounce() { clearTimeout(debTimer); debTimer = setTimeout(() => loadProducts(1), 380); }
 
 function selectCat(btn, slug) {
@@ -199,6 +242,7 @@ function clearFilters() {
 
 async function loadProducts(page = 1) {
   currentPage = page;
+  syncUrlState(page);
   document.getElementById('loadingSpinner').style.display = '';
   const params = new URLSearchParams({ page, per_page: 24, sort: document.getElementById('fSort').value });
   const search = document.getElementById('fSearch').value;
@@ -308,7 +352,9 @@ const livePoller = new LivePoller(`${API_BASE}/live.php`, res => {
   });
 }, 4000);
 
-loadProducts();
+initFiltersFromUrl();
+const initialPage = Math.max(1, parseInt(new URL(window.location.href).searchParams.get('page') || '1', 10) || 1);
+loadProducts(initialPage);
 livePoller.start();
 </script>
 </body>
