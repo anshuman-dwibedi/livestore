@@ -12,6 +12,20 @@ if ($method === 'POST' && ($_POST['_method'] ?? '') === 'PUT') {
 
 if ($method === 'OPTIONS') { http_response_code(204); exit; }
 
+function syncPrimaryProductImage(Database $db, int $productId, string $imageUrl): void {
+    $imageUrl = trim($imageUrl);
+    if ($productId <= 0 || $imageUrl === '') return;
+
+    $updated = $db->update('product_images', ['image_url' => $imageUrl], 'product_id = ? AND sort_order = 0', [$productId]);
+    if ($updated === 0) {
+        $db->insert('product_images', [
+            'product_id' => $productId,
+            'image_url'  => $imageUrl,
+            'sort_order' => 0,
+        ]);
+    }
+}
+
 // ── GET /api/products.php?id=X  (single) ─────────────────────
 if ($method === 'GET' && isset($_GET['id'])) {
     $product = $db->fetchOne(
@@ -127,6 +141,7 @@ if ($method === 'POST') {
     ]);
 
     $product = $db->fetchOne('SELECT * FROM products WHERE id = ?', [$id]);
+    syncPrimaryProductImage($db, (int)$id, $imageUrl);
     Api::success($product, 'Product created', 201);
 }
 
@@ -174,6 +189,9 @@ if ($method === 'PUT') {
     if (isset($update['category_id']))         $update['category_id']         = (int)$update['category_id'];
 
     $db->update('products', $update, 'id = ?', [$id]);
+    if (!empty($update['image_url'])) {
+        syncPrimaryProductImage($db, $id, (string)$update['image_url']);
+    }
     $product = $db->fetchOne('SELECT * FROM products WHERE id = ?', [$id]);
     Api::success($product, 'Product updated');
 }
